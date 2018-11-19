@@ -1,4 +1,3 @@
 # Project1
 
-Esto es un proyecto de git
-This is a git project
+Git Project I still don't know what i'm going to do
