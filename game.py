@@ -56,9 +56,9 @@ pygame.mouse.set_visible(False)
 font = pygame.font.SysFont(none,48)
 
 #setup images
-playerImg = pygame.image.load('')
+playerImg = pygame.image.load('player.png')
 playerRect = playerImage.get_rect()
-objectImg = pygame.image.load('')
+objectImg = pygame.image.load('object.png')
 
 #START SCREEN
 
