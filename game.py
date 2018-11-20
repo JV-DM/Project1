@@ -11,6 +11,9 @@ BACKGROUND_COLOUR = (0, 0, 0)
 #
 FPS = 60
 #
+ADDNEWOBJECTRATE = 10
+MAX_SIZE = 40
+MIN_SIZE = 10
 
 def terminate():
     pygame.quit()
@@ -78,7 +81,6 @@ while True:
             if event.type == KEYDOWN:
                 if event.key == ord('+'):
                     reverseCheat = True
-
                 if event.key == ord('-'):
                     slowCheat = True
                 if event.key == K_LEFT or event.key == ord('a'):
@@ -91,3 +93,13 @@ while True:
                     moveUp = True
                     moveDown = False
                 if event.key == K_DOWN or event.key == ord('s'):
+                    moveUP = False
+                    moveDown = True
+
+            if event.type == MOUSEMOTION:
+                playerRect.move_ip(event.pos[0] - playerRect.centerx, event.pos[1] - playerRect.centery)
+        if not reverseCheat and not slowCheat
+            objectAddCounter += 1
+        if objectAddCounter == ADDNEWOBJECTRATE
+            objectAddCounter = 0
+            baddieSize = random.randint(MAX_SIZE, MIN_SIZE)
