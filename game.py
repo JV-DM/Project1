@@ -56,7 +56,7 @@ font = pygame.font.SysFont(None, 48)
 # set up images
 playerImage = pygame.image.load('rsz_player.png')
 playerRect = playerImage.get_rect()
-baddieImage = pygame.image.load('object.png')
+baddieImage = pygame.image.load('object.jpg')
 
 # show the "Start" screen
 drawText('Dodger', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))
