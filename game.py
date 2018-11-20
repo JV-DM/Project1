@@ -17,8 +17,7 @@ MIN_SIZE = 10
 
 OBJECT_MAX_SPEED = 7
 OBJECT_MIN_SPEED = 1
-PLAYERMOVERATE = 5
-
+PLAYERMOVERATE = 50
 
 def terminate():
     pygame.quit()
@@ -34,9 +33,9 @@ def waitForPlayerToPressKey():
                     terminate()
                 return
 
-def playerHasHitObject():
+def playerHasHitObject(playerRect,objects):
     for b in objects:
-        if playerRect.colliderect(b['rect'])
+        if playerRect.colliderect(b['rect']):
             return True
     return False
 
@@ -44,26 +43,26 @@ def drawText(text,font, x, y):
     textobj = font.render(text,1 ,TEXTCOLOUR)
     textrect =textobj.get_rect()
     textrect.topleft =(x,y)
-    surface.blit(textobj,textrect)
+    windowSurface.blit(textobj,textrect)
 
 #start game,timer ,window and cursor
 pygame.init()
 mainClock = pygame.time.Clock()
-windowSurface = pygame.display.set_model((WINDOW_WIDTH,WINDOW_WEIGHT))
+windowSurface = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_WEIGHT))
 pygame.display.set_caption("Dodger")
 pygame.mouse.set_visible(False)
 
-font = pygame.font.SysFont(none,48)
+font =  pygame.font.SysFont('helvetica',15)
 
 #setup images
 playerImg = pygame.image.load('player.png')
-playerRect = playerImage.get_rect()
+playerRect = playerImg.get_rect()
 objectImg = pygame.image.load('object.png')
 
 #START SCREEN
 
-drawText('Carlos hijo de puta',font, windowSurface,(WINDOW_WIDTH/2), (WINDOW_WEIGHT/2))
-drawText('Pulsa algo pa que vaya esta wea',font, windowSurface,(WINDOW_WIDTH/2)-50, (WINDOW_WEIGHT/2) -50)
+drawText('Carlos hijo de puta',font, (WINDOW_WIDTH/2), (WINDOW_WEIGHT/2))
+drawText('Pulsa algo pa que vaya esta wea',font, (WINDOW_WIDTH/2)-50, (WINDOW_WEIGHT/2) -50)
 pygame.display.update()
 waitForPlayerToPressKey()
 
@@ -75,6 +74,7 @@ while True:
     playerRect.topleft = (WINDOW_WIDTH/2, WINDOW_WEIGHT - 50)
     moveLeft = moveRight = moveUp = moveDown = False
     reverseCheat = slowCheat = False
+    objectAddCounter = 0
 
     while True:
         score += 1
@@ -91,34 +91,32 @@ while True:
                 if event.key == K_LEFT or event.key == ord('a'):
                     moveRight = False
                     moveLeft = True
-                if even.key == K_RIGHT or event.key == ord('d'):
+                if event.key == K_RIGHT or event.key == ord('d'):
                     moveRight = True
                     moveLeft = False
-                if even.key == K_UP or event.key == ord('w'):
+                if event.key == K_UP or event.key == ord('w'):
                     moveUp = True
                     moveDown = False
                 if event.key == K_DOWN or event.key == ord('s'):
                     moveUP = False
                     moveDown = True
 
-            if event.type == MOUSEMOTION:
-                playerRect.move_ip(event.pos[0] - playerRect.centerx, event.pos[1] - playerRect.centery)
-        if not reverseCheat and not slowCheat
+        if not reverseCheat and not slowCheat:
             objectAddCounter += 1
-        if objectAddCounter == ADDNEWOBJECTRATE
+        if objectAddCounter == ADDNEWOBJECTRATE:
             objectAddCounter = 0
-            objectSize = random.randint(MAX_SIZE, MIN_SIZE)
+            objectSize = random.randint(MIN_SIZE, MAX_SIZE)
             newObject = {'rect': pygame.Rect(random.randint(0, WINDOW_WIDTH-objectSize), 0 - objectSize, objectSize, objectSize),
                          'speed': random.randint(OBJECT_MIN_SPEED, OBJECT_MAX_SPEED),
-                         'surface':pygame.transform.scale(baddieImage, (baddieSize, baddieSize)),
+                         'surface':pygame.transform.scale(objectImg, (objectSize, objectSize)),
                          }
             objects.append(newObject)
 
         if moveRight and playerRect.right < WINDOW_WIDTH:
             playerRect.move_ip(PLAYERMOVERATE, 0)
         if moveLeft and playerRect.left > 0:
-            playerRect.move_ip(-1* PLAYERMOVERATE)
-        if moveUP and playerRect.top < 0:
+            playerRect.move_ip(-1* PLAYERMOVERATE,0)
+        if moveUp and playerRect.top < 0:
             playerRect.move_ip(0,PLAYERMOVERATE)
         if moveDown and playerRect.botton < WINDOW_WEIGHT:
             playerRect.move_ip(0, -1 * PLAYERMOVERATE)
@@ -128,9 +126,9 @@ while True:
         for b in objects:
                 if not reverseCheat and not slowCheat:
                     b['rect'].move_ip(0,b['speed'])
-                else reverseCheat:
+                if reverseCheat:
                     b['rect'].move_ip(0,5)
-                else slowCheat:
+                if slowCheat:
                     b['rect'].move_ip(0,1)
 #DELETE OBJECTS THAT HAD FALL OVER THE LIMITS
         for b in objects[:]:
@@ -139,19 +137,24 @@ while True:
 
         windowSurface.fill(BACKGROUND_COLOUR)
 
+        drawText('Score: %s' % (score), font, 10, 0)
+        drawText('Top Score: %s' % (topScore), font, 10, 40)
+
+        windowSurface.blit(playerImg, playerRect)
+
         for b in objects:
             windowSurface.blit(b['surface'], b['rect'])
 
         pygame.display.update()
 
         if playerHasHitObject(playerRect,objects):
-            if score > topScore
+            if score > topScore:
                 topScore = score
             break
 
         mainClock.tick(FPS)
 
-        drawText('Game Over putos',font, windowSurface,(WINDOW_WIDTH/2), (WINDOW_WEIGHT/2))
-        drawText('Pulsa algo pa intentar otra vez puto malo',font, windowSurface,(WINDOW_WIDTH/2)-50,(WINDOW_WEIGHT/2))
+        drawText('Game Over putos',font, (WINDOW_WIDTH/2), (WINDOW_WEIGHT/2))
+        drawText('Pulsa algo pa intentar otra vez puto malo',font, (WINDOW_WIDTH/2)-50,(WINDOW_WEIGHT/2))
         pygame.display.update()
         waitForPlayerToPressKey()
