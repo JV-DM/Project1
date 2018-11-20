@@ -102,4 +102,9 @@ while True:
             objectAddCounter += 1
         if objectAddCounter == ADDNEWOBJECTRATE
             objectAddCounter = 0
-            baddieSize = random.randint(MAX_SIZE, MIN_SIZE)
+            objectSize = random.randint(MAX_SIZE, MIN_SIZE)
+            newObject = {'rect': pygame.Rect(random.randint(0, WINDOWWIDTH-baddieSize), 0 - baddieSize, baddieSize, baddieSize),
+                         'speed': random.randint(BADDIEMINSPEED, BADDIEMAXSPEED),
+                         'surface':pygame.transform.scale(baddieImage, (baddieSize, baddieSize)),
+                         }
+            objects.append(newObject)
