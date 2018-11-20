@@ -27,7 +27,7 @@ def terminate():
 def waitForPlayerToPressKey():
     while True:
         for event in pygame.event.get():
-            if event.type == QUIT
+            if event.type == QUIT:
                 terminate()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE: #QUIT WITH SCAPE KEY
