@@ -1,3 +1,3 @@
-# Project1
+# Game
 
-Git Project I still don't know what i'm going to do
+Used this easy game to learn a bit about python programming
